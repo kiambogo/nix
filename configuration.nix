@@ -8,8 +8,10 @@
   imports =
     [ # Include the results of the hardware scan.
       ./hardware-configuration.nix
-    (import "${builtins.fetchTarball https://github.com/rycee/home-manager/archive/master.tar.gz}/nixos")
+      (import "${builtins.fetchTarball https://github.com/rycee/home-manager/archive/master.tar.gz}/nixos")
     ];
+
+  nixpkgs.config.allowUnfree = true;
 
   # Use the systemd-boot EFI boot loader.
   boot.loader.systemd-boot.enable = true;
@@ -28,29 +30,12 @@
   networking.interfaces.enp0s31f6.useDHCP = true;
   networking.interfaces.wlp0s20f3.useDHCP = true;
 
-  # Configure network proxy if necessary
-  # networking.proxy.default = "http://user:password@proxy:port/";
-  # networking.proxy.noProxy = "127.0.0.1,localhost,internal.domain";
+  i18n.defaultLocale = "en_US.UTF-8";
 
-  # Select internationalisation properties.
-  # i18n.defaultLocale = "en_US.UTF-8";
-  # console = {
-  #   font = "Lat2-Terminus16";
-  #   keyMap = "us";
-  # };
-
-  
-
-  # Configure keymap in X11
-  # services.xserver.layout = "us";
-  # services.xserver.xkbOptions = "eurosign:e";
   services = {
     xserver = {
       enable = true;
       dpi = 96;
-      #displayManager = {
-      #  defaultSession = "none+i3";
-      #};
       displayManager.sddm.enable = true;
       desktopManager = {
         plasma5.enable = true;
@@ -76,10 +61,13 @@
       };
       xkbOptions = "caps:escape";
     };
+    openssh.enable = true;
     devmon.enable = true;
     autorandr = {
       enable = true;
     };
+    tlp.enable = true;
+    acpid.enable = true;
   };
 
 services.xserver.displayManager.sessionCommands = ''
@@ -138,7 +126,7 @@ services.xserver.displayManager.sessionCommands = ''
   hardware.pulseaudio.enable = true;
 
   # Enable touchpad support (enabled default in most desktopManager).
-  services.xserver.libinput.enable = true;
+  # services.xserver.libinput.enable = true;
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.christopher = {
@@ -149,6 +137,7 @@ services.xserver.displayManager.sessionCommands = ''
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
+    arandr
     wget
     vim
     firefox
@@ -171,6 +160,7 @@ services.xserver.displayManager.sessionCommands = ''
     xorg.xmodmap
     emacs
     tmux
+    spotify
   ];
 
   # Some programs need SUID wrappers, can be configured further or are
@@ -187,17 +177,6 @@ services.xserver.displayManager.sessionCommands = ''
   fonts.fonts = with pkgs; [
     fira-code
   ];
-
-  # List services that you want to enable:
-
-  # Enable the OpenSSH daemon.
-  services.openssh.enable = true;
-
-  # Open ports in the firewall.
-  # networking.firewall.allowedTCPPorts = [ ... ];
-  # networking.firewall.allowedUDPPorts = [ ... ];
-  # Or disable the firewall altogether.
-  # networking.firewall.enable = false;
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions
