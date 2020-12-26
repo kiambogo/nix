@@ -9,7 +9,8 @@
   home.username = "christopher";
   home.homeDirectory = "/home/christopher";
 
- programs.firefox = {
+ programs = {
+   firefox = {
     enable = true;
     profiles = {
       personal = {
@@ -28,6 +29,14 @@
       };
     };
   };
+  git = {
+    enable = true;
+    userEmail = "kiambogo@gmail.com";
+    userName = "Christopher Poenaru";
+    aliases = { st = "status"; lg = "log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit"; };
+    extraConfig = { core = { editor = "vim"; }; color = { ui = true; }; pull = { rebase = true; }; };
+  };
+};
 
   # This value determines the Home Manager release that your
   # configuration is compatible with. This helps avoid breakage
