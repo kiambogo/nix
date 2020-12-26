@@ -77,6 +77,28 @@
       color15   =              "#f2f2f2";
     };
   };
+  tmux = {
+    enable = true;
+    baseIndex = 1;
+    clock24 = true;
+    historyLimit = 10000;
+    keyMode = "vi";
+    plugins = with pkgs; [
+      tmuxPlugins.yank
+    ];
+    extraConfig = ''
+      set-option -g renumber-windows on
+      set-window-option -g automatic-rename on
+      set-option -g set-titles on
+      bind-key v split-window -h
+      bind-key s split-window -v
+      bind-key -n C-S-Left swap-window -t -1
+      bind-key -n C-S-Right swap-window -t +1
+      set -g prefix C-a
+      unbind C-b
+      bind C-a send-prefix
+    '';
+  };
 };
 
   # This value determines the Home Manager release that your
