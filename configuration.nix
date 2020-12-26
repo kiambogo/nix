@@ -68,6 +68,20 @@
     };
     tlp.enable = true;
     acpid.enable = true;
+    postgresql = {
+      enable = true;
+      ensureUsers = [
+        {
+          name = "christopher";
+          ensurePermissions = {
+            "ALL TABLES IN SCHEMA public" = "ALL PRIVILEGES";
+          };
+        }
+      ];
+      settings = {
+        timezone = "UTC";
+      };
+    };
   };
 
 services.xserver.displayManager.sessionCommands = ''
@@ -161,6 +175,10 @@ services.xserver.displayManager.sessionCommands = ''
     emacs
     tmux
     spotify
+    slack
+    go
+    postgresql
+    feh
   ];
 
   # Some programs need SUID wrappers, can be configured further or are
