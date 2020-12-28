@@ -13,6 +13,18 @@
   home.username = "christopher";
   home.homeDirectory = "/home/christopher";
 
+  home.file.".emacs.d" = {
+    # don't make the directory read only so that impure melpa can still happen
+    # for now
+    recursive = true;
+    source = pkgs.fetchFromGitHub {
+      owner = "syl20bnr";
+      repo = "spacemacs";
+      rev = "26b8fe0c317915b622825877eb5e5bdae88fb2b2";
+      sha256 = "00cfm6caaz85rwlrbs8rm2878wgnph6342i9688w4dji3dgyz3rz";
+    };
+  };
+
   services = {
   };
 
@@ -40,8 +52,16 @@
     enable = true;
     userEmail = "kiambogo@gmail.com";
     userName = "Christopher Poenaru";
-    aliases = { st = "status"; lg = "log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit"; };
-    extraConfig = { core = { editor = "vim"; }; color = { ui = true; }; pull = { rebase = true; }; };
+    aliases = {
+      st = "status";
+      d = "diff";
+      lg = "log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit";
+    };
+    extraConfig = {
+      core = { editor = "vim"; };
+      color = { ui = true; };
+      pull = { rebase = true; };
+    };
   };
   tmux = {
     enable = true;
