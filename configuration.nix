@@ -50,6 +50,53 @@
           i3blocks
         ];
       };
+      displayManager.sessionCommands = ''
+         ${pkgs.xorg.xrdb}/bin/xrdb -merge <<EOF
+            Xft.dpi: 144
+            Xcursor.theme: xcursor-breeze
+            Xcursor.size: 0
+            Xft.antialias: true
+            Xft.hinting:   true
+            Xft.rgba:      rgb
+            Xft.autohint:  false
+            Xft.hintstyle: hintslight
+            Xft.lcdfilter: lcddefault
+      
+            !! Theme
+            *background:                      #222D31
+            *foreground:                      #d8d8d8
+            *fading:                          8
+            *fadeColor:                       black
+            *cursorColor:                     #1ABB9B
+            *pointerColorBackground:          #2B2C2B
+            *pointerColorForeground:          #16A085
+      
+            !! black dark/light
+            *color0:                          #222D31
+            *color8:                          #585858
+            !! red dark/light
+            *color1:                          #ab4642
+            *color9:                          #ab4642
+            !! green dark/light
+            *color2:                          #7E807E
+            *color10:                         #8D8F8D
+            !! yellow dark/light
+            *color3:                          #f7ca88
+            *color11:                         #f7ca88
+            !! blue dark/light
+            *color4:                          #7cafc2
+            *color12:                         #7cafc2
+            !! magenta dark/light
+            *color5:                          #ba8baf
+            *color13:                         #ba8baf
+            !! cyan dark/light
+            *color6:                          #1ABB9B
+            *color14:                         #1ABB9B
+            !! white dark/light
+            *color7:                          #d8d8d8
+            *color15:                         #f8f8f8
+         EOF
+      '';
       synaptics = {
         enable = false;
 	twoFingerScroll = true;
@@ -59,7 +106,7 @@
         time = 10; # mins
         locker = "${pkgs.xlockmore}/bin/xlock -mode space";
       };
-      xkbOptions = "caps:escape";
+      xkbOptions = "caps:escape, altwin:swap_lalt_lwin";
     };
     openssh.enable = true;
     devmon.enable = true;
@@ -84,56 +131,24 @@
     };
   };
 
-services.xserver.displayManager.sessionCommands = ''
-   ${pkgs.xorg.xrdb}/bin/xrdb -merge <<EOF
-      Xft.dpi: 144
-      Xcursor.theme: xcursor-breeze
-      Xcursor.size: 0
-      Xft.antialias: true
-      Xft.hinting:   true
-      Xft.rgba:      rgb
-      Xft.autohint:  false
-      Xft.hintstyle: hintslight
-      Xft.lcdfilter: lcddefault
-
-      !! Theme
-      *background:                      #222D31
-      *foreground:                      #d8d8d8
-      *fading:                          8
-      *fadeColor:                       black
-      *cursorColor:                     #1ABB9B
-      *pointerColorBackground:          #2B2C2B
-      *pointerColorForeground:          #16A085
-
-      !! black dark/light
-      *color0:                          #222D31
-      *color8:                          #585858
-      !! red dark/light
-      *color1:                          #ab4642
-      *color9:                          #ab4642
-      !! green dark/light
-      *color2:                          #7E807E
-      *color10:                         #8D8F8D
-      !! yellow dark/light
-      *color3:                          #f7ca88
-      *color11:                         #f7ca88
-      !! blue dark/light
-      *color4:                          #7cafc2
-      *color12:                         #7cafc2
-      !! magenta dark/light
-      *color5:                          #ba8baf
-      *color13:                         #ba8baf
-      !! cyan dark/light
-      *color6:                          #1ABB9B
-      *color14:                         #1ABB9B
-      !! white dark/light
-      *color7:                          #d8d8d8
-      *color15:                         #f8f8f8
-   EOF
-'';
-
   # Enable CUPS to print documents.
-  services.printing.enable = true;
+  services = {
+    printing.enable = true;
+    picom = {
+      enable = true;
+      backend = "glx";
+      fade = true;
+      shadow = true;
+      activeOpacity = 0.92;
+      inactiveOpacity = 0.82;
+      menuOpacity = 0.85;
+      opacityRules = [
+        "100:name *?= 'firefox'"
+        "100:name *?= 'zoom'"
+        "100:name *?= 'dota'"
+      ];
+    };
+  };
 
   # Enable sound.
   sound.enable = true;
