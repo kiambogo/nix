@@ -1,5 +1,4 @@
 { config, pkgs, ... }: 
-
 {
  programs.kitty = {
     enable = true;
@@ -15,6 +14,7 @@
       "cmd+v" = "paste_from_clipboard";
     };
     settings = {
+      cursor_shape = "underline";
       scrollback_lines = 10000;
       enable_audio_bell = "no";
       window_padding_width = "3.0";
