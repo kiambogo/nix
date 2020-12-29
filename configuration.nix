@@ -13,6 +13,14 @@
 
   nixpkgs.config.allowUnfree = true;
 
+  hardware = {
+    bluetooth.enable = true;
+    pulseaudio = {
+      enable = true;
+      package = pkgs.pulseaudioFull;
+    };
+  };
+
   # Use the systemd-boot EFI boot loader.
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
@@ -35,11 +43,7 @@
   services = {
     xserver = {
       enable = true;
-      dpi = 96;
-      displayManager.sddm.enable = true;
-      desktopManager = {
-        plasma5.enable = true;
-      };
+      dpi = 144;
       windowManager.i3 = {
         enable = true;
         package = pkgs.i3-gaps;
@@ -61,7 +65,7 @@
             Xft.autohint:  false
             Xft.hintstyle: hintslight
             Xft.lcdfilter: lcddefault
-      
+
             !! Theme
             *background:                      #222D31
             *foreground:                      #d8d8d8
@@ -70,7 +74,7 @@
             *cursorColor:                     #1ABB9B
             *pointerColorBackground:          #2B2C2B
             *pointerColorForeground:          #16A085
-      
+
             !! black dark/light
             *color0:                          #222D31
             *color8:                          #585858
@@ -97,9 +101,8 @@
             *color15:                         #f8f8f8
          EOF
       '';
-      synaptics = {
-        enable = false;
-	twoFingerScroll = true;
+      libinput = {
+        enable = true;
       };
       xautolock = {
         enable = true;
@@ -108,6 +111,7 @@
       };
       xkbOptions = "caps:escape, altwin:swap_lalt_lwin";
     };
+    blueman.enable = true;
     openssh.enable = true;
     devmon.enable = true;
     autorandr = {
@@ -152,7 +156,6 @@
 
   # Enable sound.
   sound.enable = true;
-  hardware.pulseaudio.enable = true;
 
   # Enable touchpad support (enabled default in most desktopManager).
   # services.xserver.libinput.enable = true;
@@ -167,6 +170,7 @@
   # $ nix search wget
   environment.systemPackages = with pkgs; [
     arandr
+    acpi
     wget
     vim
     firefox
@@ -185,15 +189,15 @@
     volumeicon
     dunst
     networkmanager
-    kitty
     xorg.xmodmap
     emacs
     tmux
     spotify
     slack
-    go
     postgresql
     feh
+    iw
+    brightnessctl
   ];
 
   # Some programs need SUID wrappers, can be configured further or are
@@ -209,6 +213,7 @@
 
   fonts.fonts = with pkgs; [
     fira-code
+    font-awesome
   ];
 
   # This value determines the NixOS release from which the default
